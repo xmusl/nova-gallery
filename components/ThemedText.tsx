@@ -1,11 +1,11 @@
 import { Text, type TextProps, StyleSheet } from 'react-native';
-
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { Fonts, FontSizes, FontWeights } from '@/constants/Typography';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'heading';
 };
 
 export function ThemedText({
@@ -26,6 +26,7 @@ export function ThemedText({
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
+        type === 'heading' ? styles.heading : undefined,
         style,
       ]}
       {...rest}
@@ -35,26 +36,38 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
   default: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: FontSizes.base,
+    lineHeight: FontSizes.base * 1.5,
+    fontFamily: Fonts.body,
+    fontWeight: FontWeights.regular,
   },
   defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '600',
+    fontSize: FontSizes.base,
+    lineHeight: FontSizes.base * 1.5,
+    fontFamily: Fonts.body,
+    fontWeight: FontWeights.semibold,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    lineHeight: 32,
+    fontSize: FontSizes['3xl'],
+    lineHeight: FontSizes['3xl'] * 1.2,
+    fontFamily: Fonts.heading,
+    fontWeight: FontWeights.bold,
   },
   subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: FontSizes.xl,
+    fontFamily: Fonts.heading,
+    fontWeight: FontWeights.medium,
+  },
+  heading: {
+    fontSize: FontSizes['2xl'],
+    fontFamily: Fonts.heading,
+    fontWeight: FontWeights.bold,
   },
   link: {
+    fontSize: FontSizes.base,
     lineHeight: 30,
-    fontSize: 16,
     color: '#0a7ea4',
+    fontFamily: Fonts.body,
+    fontWeight: FontWeights.medium,
   },
 });

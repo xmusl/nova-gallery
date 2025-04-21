@@ -220,29 +220,28 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',e,
-    alignItems: 'center',fontFamily: Fonts.body,
-    zIndex: 1,,
-  },});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-});  },    fontFamily: Fonts.body,    color: 'white',  infoText: {  },    paddingVertical: 8,    gap: 12,    alignItems: 'center',    flexDirection: 'row',  infoRow: {  },    marginBottom: 16,    fontFamily: Fonts.heading,    fontSize: FontSizes.xl,    color: 'white',  infoTitle: {  },    gap: 16,  infoSection: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  infoSection: {
+    gap: 16,
+  },
+  infoTitle: {
+    color: 'white',
+    fontSize: FontSizes.xl,
+    fontFamily: Fonts.heading,
+    marginBottom: 16,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 8,
+  },
+  infoText: {
+    color: 'white',
+    fontSize: FontSizes.base,
+    fontFamily: Fonts.body,
+  },
+});

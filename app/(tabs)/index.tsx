@@ -26,7 +26,7 @@ const SortTypes = {
   // ...
 } as const;
 
-const GalleryScreen = () => {
+const GalleryScreen: React.FC = () => {
   const colorScheme = useColorScheme();
   const [media, setMedia] = useState<MediaLibrary.Asset[]>([]);
   const [loading, setLoading] = useState(true);

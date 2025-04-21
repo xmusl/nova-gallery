@@ -17,8 +17,12 @@ const MAPPING = {
   'moon.fill': 'dark-mode',
   'photo.fill': 'photo-library',
   'trash.fill': 'delete',
-  'folder.fill': 'folder'  // Add missing mapping
-} as const;
+} as Partial<
+  Record<
+    import('expo-symbols').SymbolViewProps['name'],
+    React.ComponentProps<typeof MaterialIcons>['name']
+  >
+>;
 
 export type IconSymbolName = keyof typeof MAPPING;
 

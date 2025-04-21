@@ -18,16 +18,11 @@ export default function TabLayout() {
         tabBarStyle: {
           borderTopWidth: 0,
           elevation: 0,
-          backgroundColor: colorScheme === 'dark' ? 'rgba(21,23,24,0.5)' : 'rgba(255,255,255,0.5)',
-          height: 50,
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          paddingBottom: 0,
+          backgroundColor: colorScheme === 'dark' ? 'rgba(21,23,24,0.8)' : 'rgba(255,255,255,0.8)',
+          height: 60,
         },
         tabBarItemStyle: {
-          paddingVertical: 4,
+          paddingVertical: 8,
         },
         tabBarShowLabel: false,
       }}>
@@ -35,21 +30,21 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Photos',
-          tabBarIcon: ({ color }: { color: string }) => <IconSymbol size={28} name="photo.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="photo.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="albums"
         options={{
           title: 'Albums',
-          tabBarIcon: ({ color }: { color: string }) => <IconSymbol size={28} name="folder.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="folder.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color }: { color: string }) => <IconSymbol size={28} name="gear" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gear" color={color} />,
         }}
       />
     </Tabs>

@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, StyleSheet, View, Pressable, Alert, Share, Platform } from 'react-native';
 import { Link } from 'expo-router';
 import * as MediaLibrary from 'expo-media-library';
+import { useCallback, useEffect, useState } from 'react';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -11,8 +11,6 @@ import { GestureDetector, PinchGestureHandler, PinchGestureHandlerGestureEvent }
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Search } from '@/components/Search';
-import { useFavorites } from '@/hooks/useFavorites';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -26,7 +24,7 @@ const SortTypes = {
   // ...
 } as const;
 
-const GalleryScreen: React.FC = () => {
+export default function GalleryScreen() {
   const colorScheme = useColorScheme();
   const [media, setMedia] = useState<MediaLibrary.Asset[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,8 +37,6 @@ const GalleryScreen: React.FC = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const scale = useSharedValue(1);
   const [page, setPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
-  const { favorites, toggleFavorite } = useFavorites();
 
   const loadMedia = useCallback(async (after?: string) => {
     if (loadingMore || (after && !hasMore)) return;
@@ -57,16 +53,12 @@ const GalleryScreen: React.FC = () => {
         first: ITEMS_PER_PAGE,
         after,
         mediaType: MediaLibrary.MediaType.photo,
-        sortBy: [sortType === 'DATE_ASC' ? [MediaLibrary.SortBy.creationTime, false] : [MediaLibrary.SortBy.creationTime, true]]
+        sortBy: [MediaLibrary.SortBy.creationTime],
+        // Add sort order based on selected option
+        sortOrder: sortType === 'DATE_ASC' ? 'asc' : 'desc'
       });
 
-      // Filter assets based on search query
-      const filteredAssets = searchQuery
-        ? assets.filter(asset => 
-            asset.filename.toLowerCase().includes(searchQuery.toLowerCase()))
-        : assets;
-
-      setMedia(prev => after ? [...prev, ...filteredAssets] : filteredAssets);
+      setMedia(prev => after ? [...prev, ...assets] : assets);
       setHasMore(hasNextPage);
       if (after) {
         setPage(p => p + 1);
@@ -77,7 +69,7 @@ const GalleryScreen: React.FC = () => {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [sortType, searchQuery]); // Add sortType and searchQuery to dependencies
+  }, [sortType]); // Add sortType to dependencies
 
   const onLoadMore = useCallback(() => {
     if (loadingMore || !hasMore) return;
@@ -132,7 +124,7 @@ const GalleryScreen: React.FC = () => {
 
   const handleSelectPhoto = (id: string) => {
     if (isSelectionMode) {
-      setSelectedPhotos((prev: Set<string>) => {
+      setSelectedPhotos(prev => {
         const newSet = new Set(prev);
         if (newSet.has(id)) {
           newSet.delete(id);
@@ -212,7 +204,6 @@ const GalleryScreen: React.FC = () => {
           )}
         </View>
       </View>
-      <Search onSearch={setSearchQuery} />
 
       <PinchGestureHandler onGestureEvent={pinchHandler}>
         <Animated.View style={[styles.container, animatedStyle]}>
@@ -263,14 +254,6 @@ const GalleryScreen: React.FC = () => {
                     <MaterialIcons name="check-circle" size={24} color={Colors[colorScheme ?? 'light'].tint} />
                   </View>
                 )}
-                {favorites.has(item.id) && (
-                  <MaterialIcons
-                    name="favorite"
-                    size={24}
-                    color="#ff0000"
-                    style={styles.favoriteIcon}
-                  />
-                )}
               </Pressable>
             )}
             keyExtractor={item => item.id}
@@ -287,8 +270,6 @@ const GalleryScreen: React.FC = () => {
     </ThemedView>
   );
 }
-
-export default GalleryScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -348,14 +329,5 @@ const styles = StyleSheet.create({
     right: 8,
     backgroundColor: 'white',
     borderRadius: 12,
-  },
-  favoriteIcon: {
-    position: 'absolute',
-    bottom: 8,
-    right: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
   },
 });

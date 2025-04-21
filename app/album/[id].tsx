@@ -30,15 +30,16 @@ export default function AlbumScreen() {
       const { assets, hasNextPage } = await MediaLibrary.getAssetsAsync({
         first: ITEMS_PER_PAGE,
         after,
+        album: album,
+        mediaType: MediaLibrary.MediaType.photo,
+        sortBy: [MediaLibrary.SortBy.creationTime],
         album: {
           ...album,
           assetCount: album.assetCount || 0,
-        },
-        mediaType: MediaLibrary.MediaType.photo,
-        sortBy: [MediaLibrary.SortBy.creationTime],
+        }
       });
 
-      setAssets((prev: MediaLibrary.Asset[]) => after ? [...prev, ...assets] : assets);
+      setAssets(prev => after ? [...prev, ...assets] : assets);
       setHasNextPage(hasNextPage);
     } catch (error) {
       console.error('Error loading album assets:', error);
